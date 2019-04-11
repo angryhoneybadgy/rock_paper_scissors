@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Rock-Paper-Scissors</title>
+    <style>
+        button {
+            background-color: rgb(100,100,100);
+            color: rgb(200,200,200);
+            width: 80px;
+            border-radius: 3px;
+            border: solid 1px rgb(200,200,200);
+            box-shadow: 0 0 5px gray;
+            font-size: 15px;
+            margin-right: 5px;
+        }
+        body {
+            font-family: Helvetica, sans-serif;
+            background-color: rgb(50,50,50);
+            color: rgb(200,200,200);
+        }
+        #container {
+            align-items: center;
+            padding-top: 100px;
+        }
+        #buttonSection {
+            text-align: center;
+        }
+        #result {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="buttonSection">
+            <button id="rock" class="choice">Rock</button>
+            <button id="paper" class="choice">Paper</button>
+            <button id="scissors" class="choice">Scissors</button>
+        </div>
+        <div  id="result">
+            <p id="currentScore"></p>
+            <p id="ongoingScore"></p>
+            <p id="matchResult"></p>
+        </div>
+    </div>
+    <script>
+        const buttons = document.querySelectorAll("button.choice");
+        let playerScore = 0;
+        let computerScore = 0;
+        buttons.forEach((button) => {
+            button.addEventListener("click", function(e){
+                const playerChoice = button.id;
+                const computerChoice = computerPlay();
+                const result = playRound(playerChoice, computerChoice);
+                results(playerChoice, computerChoice, result);
+            })
+        });
+        function results(player, computer, result)
+        {
+            const currentScore = document.querySelector("div#result p#currentScore");
+            const ongoingScore = document.querySelector("div#result p#ongoingScore");
+            const matchResult = document.querySelector("div#result p#matchResult");
+            matchResult.textContent = "";
+            currentScore.textContent = player.toUpperCase() + " vs " + computer.toUpperCase();
+            if (result===0)
+            {
+                currentScore.textContent += " Draw!";
+            }
+            if (result===1)
+            {
+                currentScore.textContent += " You lose!";
+                computerScore++;
+            }
+            if (result===2)
+            {
+                currentScore.textContent += " You win!";
+                playerScore++;
+            }
+            ongoingScore.textContent = "Your score: " + playerScore + " Computer's score: " + computerScore;
+            matchResult.setAttribute("style", "font-size: 24px");
+            if (playerScore === 5)
+            {
+                matchResult.textContent = "YOU ARE THE WINNER";
+                playerScore = 0;
+                computerScore = 0;
+            }
+            if (computerScore === 5)
+            {
+                matchResult.textContent = "YOU ARE THE LOSER";
+                playerScore = 0;
+                computerScore = 0;
+            }
+        }
+        function computerPlay() 
+        {
+            let number = Math.floor(Math.random() * 3);
+            if (number == 0)
+            return "Rock";
+            else if (number == 1)
+            return "Paper";
+            else return "Scissors";
+        }
+        function playRound(player, computer)
+        {
+            player = player.toLowerCase();
+            computer = computer.toLowerCase();
+            if (player == "rock")
+            {
+                if (computer == "rock")
+                    return 0;
+                if (computer == "paper")
+                    return 1;
+                if (computer == "scissors")
+                    return 2;
+            }
+            if (player == "paper")
+            {
+                if (computer == "rock")
+                    return 2;
+                if (computer == "paper")
+                    return 0;
+                if (computer == "scissors")
+                    return 1;
+            }
+            if (player == "scissors")
+            {
+                if (computer == "rock")
+                    return 1;
+                if (computer == "paper")
+                    return 2;
+                if (computer == "scissors")
+                    return 0;
+            }
+        }
+    </script>
+</body>
+</html>
